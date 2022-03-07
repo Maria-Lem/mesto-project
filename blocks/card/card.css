@@ -1,0 +1,28 @@
+.card {
+  /* flex-basis: 31%; */
+  margin-right: 17px;
+  margin-bottom: 20px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card:nth-of-type(3n) {
+  margin-right: 0;
+}
+
+@media screen and (max-width: 992px) {
+  .card, .card:nth-of-type(3n) {
+    margin-right: 17px;
+  }
+
+  .card:nth-of-type(2n) {
+    margin-right: 0;
+  }
+}
+
+@media screen and (max-width: 677px) {
+  .card, .card:nth-of-type(3n), .card:nth-of-type(2n) {
+    margin-right: 0;
+  }
+}

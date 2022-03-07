@@ -1,0 +1,15 @@
+.profile__pic-cover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 768px) {
+  .profile__pic-cover {
+    margin-bottom: 26px;
+  }
+}

@@ -1,0 +1,19 @@
+.cards {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding-bottom: 46px;
+}
+
+@media screen and (max-width: 992px) {
+  .cards {
+    justify-content: space-evenly;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .cards {
+    padding-bottom: 22px;
+  }
+}

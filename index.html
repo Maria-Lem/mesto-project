@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./pages/index.css">
+  <title>Mesto</title>
+</head>
+
+<body class="page">
+    <header class="header">
+      <div class="container">
+        <img src="./images/logo.svg" alt="Логотип сайта" class="logo header__logo">
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="container">
+        <section class="profile">
+          <div class="profile__column">
+            <div class="profile__pic-cover">
+              <img src="./images/avatar.jpg" alt="Фото профиля" class="profile__pic">
+            </div>
+            <div class="profile__name-block">
+              <h1 class="profile__name">
+                Жак-Ив Кусто
+                <button class="button button__edit" type="button" aria-label="Редактировать профиль"></button>
+              </h1>
+              <p class="profile__occupation">Исследователь океана</p>
+
+            </div>
+          </div>
+          <button class="button button__add" type="button" aria-label="Добавить фотографию"></button>
+        </section>
+
+        <section class="cards">
+          <div class="card">
+            <img src="./images/card-image-1.jpg" alt="Карачаевск" class="card__image">
+            <div class="card__content">
+              <p class="card__title">Карачаевск</p>
+              <button class="button button__like" type="button" aria-label="Лайкнуть фотографию"></button>
+            </div>
+          </div>
+          <div class="card">
+            <img src="./images/card-image-2.jpg" alt="Гора Эльбрус" class="card__image">
+            <div class="card__content">
+              <p class="card__title">Гора Эльбрус</p>
+              <button class="button button__like" type="button" aria-label="Лайкнуть фотографию"></button>
+            </div>
+          </div>
+          <div class="card">
+            <img src="./images/card-image-3.jpg" alt="Домбай" class="card__image">
+            <div class="card__content">
+              <p class="card__title">Домбай</p>
+              <button class="button button__like" type="button" aria-label="Лайкнуть фотографию"></button>
+            </div>
+          </div>
+          <div class="card">
+            <img src="./images/card-image-2.jpg" alt="Гора Эльбрус" class="card__image">
+            <div class="card__content">
+              <p class="card__title">Гора Эльбрус</p>
+              <button class="button button__like" type="button" aria-label="Лайкнуть фотографию"></button>
+            </div>
+          </div>
+          <div class="card">
+            <img src="./images/card-image-3.jpg" alt="Домбай" class="card__image">
+            <div class="card__content">
+              <p class="card__title">Домбай</p>
+              <button class="button button__like" type="button" aria-label="Лайкнуть фотографию"></button>
+            </div>
+          </div>
+          <div class="card">
+            <img src="./images/card-image-1.jpg" alt="Карачаевск" class="card__image">
+            <div class="card__content">
+              <p class="card__title">Карачаевск</p>
+              <button class="button button__like" type="button" aria-label="Лайкнуть фотографию"></button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
+      </div>
+    </footer>
+
+    <div class="popup">
+      <div class="popup__container">
+        <button class="button button__close"></button>
+        <h3 class="popup__title">Редактировать профиль</h3>
+        <form action="#" class="form popup__form">
+          <input type="text" class="input form__input" placeholder="Жак-Ив Кусто">
+          <input type="text" class="input form__input" placeholder="Исследователь океана">
+          <button class="button-text form__button-text">Сохранить</button>
+        </form>
+      </div>
+    </div>
+</body>
+
+</html>
