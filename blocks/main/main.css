@@ -1,11 +1,11 @@
-.container {
+.main {
   margin: 0 auto;
   max-width: 880px;
   width: 100%;
 }
 
 @media screen and (max-width: 992px) {
-  .container {
+  .main {
     width: 88%;
   }
 }

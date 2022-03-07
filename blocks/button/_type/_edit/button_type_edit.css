@@ -1,0 +1,17 @@
+.button_type_edit {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  align-self: center;
+  margin-left: 22px;
+  width: 24px;
+  height: 24px;
+  background: url(../../../../images/edit-button.svg) no-repeat center / contain;
+}
+
+@media screen and (max-width: 425px) {
+  .button_type_edit {
+    width: 18px;
+    height: 18px;
+    margin-left: 12px;
+  }
+}

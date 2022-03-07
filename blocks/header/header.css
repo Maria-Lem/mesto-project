@@ -1,5 +1,8 @@
 .header {
+  margin: 0 auto;
   padding-top: 45px;
+  max-width: 880px;
+  width: 100%;
 }
 
 .header::after {
@@ -11,6 +14,12 @@
   height: 1px;
   background-color: #fff;
   opacity: .7;
+}
+
+@media screen and (max-width: 992px) {
+  .header {
+    width: 88%;
+  }
 }
 
 @media screen and (max-width: 425px) {

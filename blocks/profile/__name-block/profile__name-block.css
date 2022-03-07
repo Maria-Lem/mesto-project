@@ -1,6 +1,3 @@
-/* .profile__name-block {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-
-} */
+.profile__name-block {
+  display: grid;
+}
