@@ -78,14 +78,28 @@
     <p class="footer__copyright">&copy; 2020 Mesto Russia</p>
   </footer>
 
-  <div class="popup">
+  <!-- Модальное окно редактирования профиля -->
+  <div class="popup popup_type_edit">
     <div class="popup__container">
       <button class="button button_type_close"></button>
       <h3 class="popup__title">Редактировать профиль</h3>
       <form action="#" class="form popup__form" name="editPopup">
-        <input type="text" class="form__input" name="userName" id="userName" placeholder="Ваше имя">
-        <input type="text" class="form__input" name="userOccupation" id="userOccupation" placeholder="Ваш род деятельности">
+        <input type="text" class="form__input form__input_type_name" name="userName" placeholder="Ваше имя">
+        <input type="text" class="form__input form__input_type_occupation" name="userOccupation" placeholder="Ваш род деятельности">
         <button class="button-text form__button-text">Сохранить</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Модальное окно добавления карточки -->
+  <div class="popup popup_type_add">
+    <div class="popup__container">
+      <button class="button button_type_close"></button>
+      <h3 class="popup__title">Новое место</h3>
+      <form action="#" class="form popup__form" name="editPopup">
+        <input type="text" class="form__input form__input_type_place" name="userName" placeholder="Название">
+        <input type="text" class="form__input form__input_type_photo" name="userOccupation" placeholder="Ссылка на картинку">
+        <button class="button-text form__button-text">Создать</button>
       </form>
     </div>
   </div>
