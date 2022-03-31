@@ -1,5 +1,6 @@
 .card {
   /* flex-basis: 31%; */
+  position: relative;
   margin-right: 17px;
   margin-bottom: 20px;
   background: #fff;

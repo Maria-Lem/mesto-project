@@ -6,6 +6,7 @@ const buttonClose = document.querySelectorAll('.button_type_close');
 const buttonAdd = document.querySelector('.button_type_add');
 const buttonCreate = document.querySelector('.button-text_type_add');
 
+const formEdit = document.querySelector('.form_type_edit');
 const formAdd = document.querySelector('.form_type_add');
 const userName = document.querySelector('.form__input_type_name');
 const userOccupation = document.querySelector('.form__input_type_occupation');
@@ -42,6 +43,16 @@ function closeAdd() {
   popupAdd.classList.remove('popup_opened');
 }
 
+// При открытии модального окна, шначения инпутов автоматически заполняются значениями в профиле
+userName.value = profileName.textContent;
+userOccupation.value = profileOccupation.textContent;
+
+function changeProfileName(nameValue, jobValue) {
+  profileName.textContent = nameValue;
+  profileOccupation.textContent = jobValue;
+}
+
+// Creating new card
 function addCard(placeValue, photoValue) {
   const cardContainer = document.createElement('article');
   cardContainer.classList.add('card');
@@ -66,17 +77,20 @@ function addCard(placeValue, photoValue) {
   cardsBlock.prepend(cardContainer);
 }
 
-// При открытии модального окна, шначения инпутов автоматически заполняются значениями в профиле
-userName.value = profileName.textContent;
-userOccupation.value = profileOccupation.textContent;
-
 buttonAdd.addEventListener('click', openAdd);
 buttonClose[1].addEventListener('click', closeAdd);
 buttonEdit.addEventListener('click', openEdit);
 buttonClose[0].addEventListener('click', closeEdit);
+
+formEdit.addEventListener('submit', function (e) {
+  e.preventDefault();
+  console.log('hello');
+  changeProfileName(userName.value, userOccupation.value);
+  closeEdit();
+})
+
 formAdd.addEventListener('submit', function (e) {
   e.preventDefault();
-  console.log('Форма отправлена');
   addCard(cardName.value, cardPhoto.value);
   formAdd.reset();
   closeAdd();
