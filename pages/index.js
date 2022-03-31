@@ -4,6 +4,8 @@ const popupAdd = document.querySelector('.popup_type_add');
 const buttonEdit = document.querySelector('.button_type_edit');
 const buttonClose = document.querySelectorAll('.button_type_close');
 const buttonAdd = document.querySelector('.button_type_add');
+const buttonLike = document.querySelectorAll('.button_type_like');
+const buttonDelete = document.querySelectorAll('.button_type_delete');
 const buttonCreate = document.querySelector('.button-text_type_add');
 
 const formEdit = document.querySelector('.form_type_edit');
@@ -53,28 +55,47 @@ function changeProfileName(nameValue, jobValue) {
 }
 
 // Creating new card
+// function addCard(placeValue, photoValue) {
+//   const cardContainer = document.createElement('article');
+//   cardContainer.classList.add('card');
+
+//   const cardImage = document.createElement('img');
+//   cardImage.classList.add('card__image');
+//   cardImage.src = photoValue;
+//   cardImage.alt = placeValue;
+
+//   const cardContent = document.createElement('div');
+//   cardContent.classList.add('card__content');
+
+//   const cardTitle = document.createElement('h3');
+//   cardTitle.classList.add('card__title');
+//   cardTitle.textContent = placeValue;
+
+//   const cardButton = document.createElement('button');
+//   cardButton.classList.add('button', 'button_type_like');
+
+//   cardContent.append(cardTitle, cardButton);
+//   cardContainer.append(cardImage, cardContent);
+//   cardsBlock.prepend(cardContainer);
+// }
+
 function addCard(placeValue, photoValue) {
-  const cardContainer = document.createElement('article');
-  cardContainer.classList.add('card');
+  const cardTemplate = document.querySelector('#cardTemplate').content;
+  const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
 
-  const cardImage = document.createElement('img');
-  cardImage.classList.add('card__image');
-  cardImage.src = photoValue;
-  cardImage.alt = placeValue;
+  cardElement.querySelector('.card__title').textContent = placeValue;
+  cardElement.querySelector('.card__image').src = photoValue;
 
-  const cardContent = document.createElement('div');
-  cardContent.classList.add('card__content');
+  cardElement.querySelector('.button_type_like').addEventListener('click', function(e) {
+    e.target.classList.toggle('button_active');
+  });
 
-  const cardTitle = document.createElement('h3');
-  cardTitle.classList.add('card__title');
-  cardTitle.textContent = placeValue;
+  cardElement.querySelector('.button_type_delete').addEventListener('click', function(e) {
+    const cardItem = cardElement.closest('.card');
+    cardItem.remove();
+  })
 
-  const cardButton = document.createElement('button');
-  cardButton.classList.add('button', 'button_type_like');
-
-  cardContent.append(cardTitle, cardButton);
-  cardContainer.append(cardImage, cardContent);
-  cardsBlock.prepend(cardContainer);
+  cardsBlock.prepend(cardElement);
 }
 
 buttonAdd.addEventListener('click', openAdd);
@@ -82,12 +103,24 @@ buttonClose[1].addEventListener('click', closeAdd);
 buttonEdit.addEventListener('click', openEdit);
 buttonClose[0].addEventListener('click', closeEdit);
 
+buttonLike.forEach(item => {
+  item.addEventListener('click', function(e) {
+    e.target.classList.toggle('button_active');
+  });
+});
+
+buttonDelete.forEach(item => {
+  item.addEventListener('click', function() {
+    const cardItem = item.closest('.card');
+    cardItem.remove();
+  });
+});
+
 formEdit.addEventListener('submit', function (e) {
   e.preventDefault();
-  console.log('hello');
   changeProfileName(userName.value, userOccupation.value);
   closeEdit();
-})
+});
 
 formAdd.addEventListener('submit', function (e) {
   e.preventDefault();
