@@ -46,6 +46,7 @@ const initialCards = [{
   }
 ];
 
+//Adding cards to the page from initialCards array
 initialCards.forEach((elem) => {
   const cardBlockTemplate = document.querySelector('#cardBlockTemplate').content;
   const cardElement = cardBlockTemplate.cloneNode(true);
@@ -61,8 +62,8 @@ initialCards.forEach((elem) => {
   });
   
   cardsBlock.append(cardElement);
-  console.log(cardElement);
 });
+
 // function openPopupEdit(e) {
 //   if (e.target.matches('.button_type_edit')) {
 //     popupEdit.classList.add('popup_opened');
@@ -122,6 +123,7 @@ function changeProfileName(nameValue, jobValue) {
 //   cardsBlock.prepend(cardContainer);
 // }
 
+//Creating new card
 function addCard(placeValue, photoValue) {
   const cardTemplate = document.querySelector('#cardBlockTemplate').content;
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
