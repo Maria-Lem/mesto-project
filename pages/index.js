@@ -20,6 +20,49 @@ const profileOccupation = document.querySelector('.profile__occupation');
 
 const cardsBlock = document.querySelector('.cards');
 
+const initialCards = [{
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
+
+initialCards.forEach((elem) => {
+  const cardBlockTemplate = document.querySelector('#cardBlockTemplate').content;
+  const cardElement = cardBlockTemplate.cloneNode(true);
+  cardElement.querySelector('.card__title').textContent = elem.name;
+  cardElement.querySelector('.card__image').src = elem.link;
+  cardElement.querySelector('.card__image').alt = elem.name;
+  
+  cardElement.querySelector('.button_type_like').addEventListener('click', e => e.target.classList.toggle('button_active'));
+  
+  cardElement.querySelector('.button_type_delete').addEventListener('click', e => {
+    const cardItem = e.target.closest('.card');
+    cardItem.remove();
+  });
+  
+  cardsBlock.append(cardElement);
+  console.log(cardElement);
+});
 // function openPopupEdit(e) {
 //   if (e.target.matches('.button_type_edit')) {
 //     popupEdit.classList.add('popup_opened');
@@ -80,20 +123,18 @@ function changeProfileName(nameValue, jobValue) {
 // }
 
 function addCard(placeValue, photoValue) {
-  const cardTemplate = document.querySelector('#cardTemplate').content;
+  const cardTemplate = document.querySelector('#cardBlockTemplate').content;
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
 
   cardElement.querySelector('.card__title').textContent = placeValue;
   cardElement.querySelector('.card__image').src = photoValue;
 
-  cardElement.querySelector('.button_type_like').addEventListener('click', function(e) {
-    e.target.classList.toggle('button_active');
-  });
+  cardElement.querySelector('.button_type_like').addEventListener('click', e => e.target.classList.toggle('button_active'));
 
-  cardElement.querySelector('.button_type_delete').addEventListener('click', function(e) {
-    const cardItem = cardElement.closest('.card');
+  cardElement.querySelector('.button_type_delete').addEventListener('click', e => {
+    const cardItem = e.target.closest('.card');
     cardItem.remove();
-  })
+  });
 
   cardsBlock.prepend(cardElement);
 }
@@ -104,13 +145,13 @@ buttonEdit.addEventListener('click', openEdit);
 buttonClose[0].addEventListener('click', closeEdit);
 
 buttonLike.forEach(item => {
-  item.addEventListener('click', function(e) {
+  item.addEventListener('click', function (e) {
     e.target.classList.toggle('button_active');
   });
 });
 
 buttonDelete.forEach(item => {
-  item.addEventListener('click', function() {
+  item.addEventListener('click', function () {
     const cardItem = item.closest('.card');
     cardItem.remove();
   });

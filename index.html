@@ -29,55 +29,67 @@
     </section>
 
     <section class="cards">
-      <article class="card">
-        <img src="./images/card-image-1.jpg" alt="Карачаевск" class="card__image">
-        <button class="button button_type_delete" type="button" aria-label="Удалить пост"></button>
-        <div class="card__content">
-          <h3 class="card__title">Карачаевск</h3>
-          <button class="button button_type_like" type="button" aria-label="Лайкнуть фотографию"></button>
-        </div>
-      </article>
-      <article class="card">
-        <img src="./images/card-image-2.jpg" alt="Гора Эльбрус" class="card__image">
-        <button class="button button_type_delete" type="button" aria-label="Удалить пост"></button>
-        <div class="card__content">
-          <h3 class="card__title">Гора Эльбрус</h3>
-          <button class="button button_type_like" type="button" aria-label="Лайкнуть фотографию"></button>
-        </div>
-      </article>
-      <article class="card">
-        <img src="./images/card-image-3.jpg" alt="Домбай" class="card__image">
-        <button class="button button_type_delete" type="button" aria-label="Удалить пост"></button>
-        <div class="card__content">
-          <h3 class="card__title">Домбай</h3>
-          <button class="button button_type_like" type="button" aria-label="Лайкнуть фотографию"></button>
-        </div>
-      </article>
-      <article class="card">
-        <img src="./images/card-image-2.jpg" alt="Гора Эльбрус" class="card__image">
-        <button class="button button_type_delete" type="button" aria-label="Удалить пост"></button>
-        <div class="card__content">
-          <h3 class="card__title">Гора Эльбрус</h3>
-          <button class="button button_type_like" type="button" aria-label="Лайкнуть фотографию"></button>
-        </div>
-      </article>
-      <article class="card">
-        <img src="./images/card-image-3.jpg" alt="Домбай" class="card__image">
-        <button class="button button_type_delete" type="button" aria-label="Удалить пост"></button>
-        <div class="card__content">
-          <h3 class="card__title">Домбай</h3>
-          <button class="button button_type_like" type="button" aria-label="Лайкнуть фотографию"></button>
-        </div>
-      </article>
-      <article class="card">
-        <img src="./images/card-image-1.jpg" alt="Карачаевск" class="card__image">
-        <button class="button button_type_delete" type="button" aria-label="Удалить пост"></button>
-        <div class="card__content">
-          <h3 class="card__title">Карачаевск</h3>
-          <button class="button button_type_like" type="button" aria-label="Лайкнуть фотографию"></button>
-        </div>
-      </article>
+      <template id="cardBlockTemplate">
+        <article class="card">
+          <img src="" alt="" class="card__image">
+          <button class="button button_type_delete" type="button" aria-label="Удалить пост"></button>
+          <div class="card__content">
+            <h3 class="card__title"></h3>
+            <button class="button button_type_like" type="button" aria-label="Лайкнуть фотографию"></button>
+          </div>
+        </article>
+      </template>
     </section>
+    <!-- <section class="cards">
+      <article class="card">
+        <img src="./images/card-image-1.jpg" alt="Карачаевск" class="card__image">
+        <button class="button button_type_delete" type="button" aria-label="Удалить пост"></button>
+        <div class="card__content">
+          <h3 class="card__title">Карачаевск</h3>
+          <button class="button button_type_like" type="button" aria-label="Лайкнуть фотографию"></button>
+        </div>
+      </article>
+      <article class="card">
+        <img src="./images/card-image-2.jpg" alt="Гора Эльбрус" class="card__image">
+        <button class="button button_type_delete" type="button" aria-label="Удалить пост"></button>
+        <div class="card__content">
+          <h3 class="card__title">Гора Эльбрус</h3>
+          <button class="button button_type_like" type="button" aria-label="Лайкнуть фотографию"></button>
+        </div>
+      </article>
+      <article class="card">
+        <img src="./images/card-image-3.jpg" alt="Домбай" class="card__image">
+        <button class="button button_type_delete" type="button" aria-label="Удалить пост"></button>
+        <div class="card__content">
+          <h3 class="card__title">Домбай</h3>
+          <button class="button button_type_like" type="button" aria-label="Лайкнуть фотографию"></button>
+        </div>
+      </article>
+      <article class="card">
+        <img src="./images/card-image-2.jpg" alt="Гора Эльбрус" class="card__image">
+        <button class="button button_type_delete" type="button" aria-label="Удалить пост"></button>
+        <div class="card__content">
+          <h3 class="card__title">Гора Эльбрус</h3>
+          <button class="button button_type_like" type="button" aria-label="Лайкнуть фотографию"></button>
+        </div>
+      </article>
+      <article class="card">
+        <img src="./images/card-image-3.jpg" alt="Домбай" class="card__image">
+        <button class="button button_type_delete" type="button" aria-label="Удалить пост"></button>
+        <div class="card__content">
+          <h3 class="card__title">Домбай</h3>
+          <button class="button button_type_like" type="button" aria-label="Лайкнуть фотографию"></button>
+        </div>
+      </article>
+      <article class="card">
+        <img src="./images/card-image-1.jpg" alt="Карачаевск" class="card__image">
+        <button class="button button_type_delete" type="button" aria-label="Удалить пост"></button>
+        <div class="card__content">
+          <h3 class="card__title">Карачаевск</h3>
+          <button class="button button_type_like" type="button" aria-label="Лайкнуть фотографию"></button>
+        </div>
+      </article>
+    </section> -->
   </main>
 
   <footer class="footer">
@@ -110,16 +122,6 @@
       </form>
     </div>
   </div>
-  <template id="cardTemplate">
-    <article class="card">
-      <img  class="card__image">
-      <button class="button button_type_delete" type="button" aria-label="Удалить пост"></button>
-      <div class="card__content">
-        <h3 class="card__title"></h3>
-        <button class="button button_type_like" type="button" aria-label="Лайкнуть фотографию"></button>
-      </div>
-    </article>
-  </template>
   <script src="./pages/index.js"></script>
 </body>
 
