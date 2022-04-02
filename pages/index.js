@@ -9,7 +9,6 @@ const buttonClose = document.querySelectorAll('.button_type_close');
 const buttonAdd = document.querySelector('.button_type_add');
 const buttonLike = document.querySelectorAll('.button_type_like');
 const buttonDelete = document.querySelectorAll('.button_type_delete');
-const buttonCreate = document.querySelector('.button-text_type_add');
 
 const formEdit = document.querySelector('.form_type_edit');
 const formAdd = document.querySelector('.form_type_add');
@@ -22,6 +21,8 @@ const profileName = document.querySelector('.profile__name');
 const profileOccupation = document.querySelector('.profile__occupation');
 
 const cardsBlock = document.querySelector('.cards');
+const cardTemplate = document.querySelector('#cardBlockTemplate').content;
+
 
 const initialCards = [{
     name: 'Архыз',
@@ -49,30 +50,37 @@ const initialCards = [{
   }
 ];
 
-//Adding cards to the page from initialCards array
-initialCards.forEach((elem) => {
-  const cardBlockTemplate = document.querySelector('#cardBlockTemplate').content;
-  const cardElement = cardBlockTemplate.cloneNode(true);
+// Creating card
+function renderCard(placeValue, photoValue) {
+  const cardElement = cardTemplate.cloneNode(true);
+  const cardTitle = cardElement.querySelector('.card__title');
+  const cardImage = cardElement.querySelector('.card__image');
 
-  cardElement.querySelector('.card__title').textContent = elem.name;
-  cardElement.querySelector('.card__image').src = elem.link;
-  cardElement.querySelector('.card__image').alt = elem.name;
-  
+  cardTitle.textContent = placeValue;
+  cardImage.src = photoValue;
+  cardImage.alt = placeValue;
+
   cardElement.querySelector('.button_type_like').addEventListener('click', e => e.target.classList.toggle('button_active'));
 
   cardElement.querySelector('.button_type_delete').addEventListener('click', e => {
     const cardItem = e.target.closest('.card');
     cardItem.remove();
   });
-  
-  cardElement.querySelector('.card__image').addEventListener('click', () => {
+
+  cardImage.addEventListener('click', () => {
+    popupImage.src = photoValue;
+    popupImage.alt = placeValue;
+    popupCaption.textContent = placeValue;
     openPopup(popupCard);
-    popupImage.src = elem.link;
-    popupCaption.textContent = elem.name;
   });
 
-  cardsBlock.append(cardElement);
-});
+  return cardElement;
+}
+
+//Adding cards to the page from initialCards array
+initialCards.forEach((item) => {
+  cardsBlock.append(renderCard(item.name, item.link));
+})
 
 // Open and close modal wondows
 function openPopup(popup) {
@@ -83,58 +91,20 @@ function closePopup(popup) {
   popup.classList.remove('popup_opened')
 }
 
-// При открытии модального окна, шначения инпутов автоматически заполняются значениями в профиле
-userName.value = profileName.textContent;
-userOccupation.value = profileOccupation.textContent;
-
 function changeProfileName(nameValue, jobValue) {
   profileName.textContent = nameValue;
   profileOccupation.textContent = jobValue;
 }
 
-//Creating new card
-function addCard(placeValue, photoValue) {
-  const cardTemplate = document.querySelector('#cardBlockTemplate').content;
-  const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
-
-  cardElement.querySelector('.card__title').textContent = placeValue;
-  cardElement.querySelector('.card__image').src = photoValue;
-
-  cardElement.querySelector('.button_type_like').addEventListener('click', e => e.target.classList.toggle('button_active'));
-
-  cardElement.querySelector('.button_type_delete').addEventListener('click', e => {
-    const cardItem = e.target.closest('.card');
-    cardItem.remove();
-  });
-
-  cardElement.querySelector('.card__image').addEventListener('click', () => {
-    openPopup(popupCard);
-    popupImage.src = photoValue;
-    popupCaption.textContent = placeValue;
-  });
-
-  cardsBlock.prepend(cardElement);
-  
-}
-
-buttonEdit.addEventListener('click', () => openPopup(popupEdit));
-buttonClose[0].addEventListener('click', () => closePopup(popupEdit));
+buttonEdit.addEventListener('click', () => {
+  // При открытии модального окна, шначения инпутов автоматически заполняются значениями в профиле
+  userName.value = profileName.textContent;
+  userOccupation.value = profileOccupation.textContent;
+  openPopup(popupEdit);
+});
 buttonAdd.addEventListener('click', () => openPopup(popupAdd));
-buttonClose[1].addEventListener('click', () => closePopup(popupAdd));
-buttonClose[2].addEventListener('click', () => closePopup(popupCard));
 
-buttonLike.forEach(item => {
-  item.addEventListener('click', function (e) {
-    e.target.classList.toggle('button_active');
-  });
-});
-
-buttonDelete.forEach(item => {
-  item.addEventListener('click', function () {
-    const cardItem = item.closest('.card');
-    cardItem.remove();
-  });
-});
+buttonClose.forEach(btn => btn.addEventListener('click', e => closePopup(e.target.closest('.popup'))))
 
 formEdit.addEventListener('submit', function (e) {
   e.preventDefault();
@@ -144,7 +114,7 @@ formEdit.addEventListener('submit', function (e) {
 
 formAdd.addEventListener('submit', function (e) {
   e.preventDefault();
-  addCard(cardInputName.value, cardInputPhoto.value);
-  formAdd.reset();
+  cardsBlock.prepend(renderCard(cardInputName.value, cardInputPhoto.value));
   closePopup(popupAdd);
+  formAdd.reset();
 });
