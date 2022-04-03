@@ -1,7 +1,7 @@
 .profile__column {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   max-width: 486px;
   width: 100%;
 }
