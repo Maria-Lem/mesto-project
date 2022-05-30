@@ -1,0 +1,11 @@
+.form__input-error {
+  display: none;
+  margin: 5px 0 13px;
+  font-size: 12px;
+  line-height: 1.25;
+  color: #f00;
+}
+
+.form__input-error:last-of-type {
+  margin-bottom: 31px;
+}

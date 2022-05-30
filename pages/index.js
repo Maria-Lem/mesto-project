@@ -3,19 +3,21 @@ const popupAdd = document.querySelector('.popup_type_add');
 const popupCard = document.querySelector('.popup_type_card');
 const popupImage = document.querySelector('.popup__image');
 const popupCaption = document.querySelector('.popup__caption');
+const popup = document.querySelectorAll('.popup');
+const popupContent = document.querySelectorAll('.container');
 
 const buttonEdit = document.querySelector('.button_type_edit');
-const buttonClose = document.querySelectorAll('.button_type_close');
 const buttonAdd = document.querySelector('.button_type_add');
+const buttonClose = document.querySelectorAll('.button_type_close');
 const buttonLike = document.querySelectorAll('.button_type_like');
 const buttonDelete = document.querySelectorAll('.button_type_delete');
 
-const formEdit = document.querySelector('.form_type_edit');
-const formAdd = document.querySelector('.form_type_add');
-const userName = document.querySelector('.form__input_type_name');
-const userOccupation = document.querySelector('.form__input_type_occupation');
-const cardInputName = document.querySelector('.form__input_type_place');
-const cardInputPhoto = document.querySelector('.form__input_type_photo');
+const formEdit = document.forms.editProfilePopup;
+const formAdd = document.forms.addCardPopup;
+const userName = formEdit.elements.userName;
+const userOccupation = formEdit.elements.userOccupation;
+const photoName = formAdd.elements.photoName;
+const photoLink = formAdd.elements.photoLink;
 
 const profileName = document.querySelector('.profile__name');
 const profileOccupation = document.querySelector('.profile__occupation');
@@ -96,25 +98,116 @@ function changeProfileName(nameValue, jobValue) {
   profileOccupation.textContent = jobValue;
 }
 
+const closeOnEsc = (popup) => {
+  const esc = (e) => {
+    if (e.key === 'Escape') {
+      closePopup(popup);
+    }
+    document.removeEventListener('keydown', esc);
+  };
+
+  document.addEventListener('keydown', esc);
+};
+
 buttonEdit.addEventListener('click', () => {
   // При открытии модального окна, шначения инпутов автоматически заполняются значениями в профиле
   userName.value = profileName.textContent;
   userOccupation.value = profileOccupation.textContent;
   openPopup(popupEdit);
+  closeOnEsc(popupEdit);
 });
-buttonAdd.addEventListener('click', () => openPopup(popupAdd));
 
-buttonClose.forEach(btn => btn.addEventListener('click', e => closePopup(e.target.closest('.popup'))))
+buttonAdd.addEventListener('click', () => {
+  openPopup(popupAdd);
+  closeOnEsc(popupAdd);
+});
 
-formEdit.addEventListener('submit', function (e) {
-  e.preventDefault();
+// CLose popups by clicking on overlay
+popupContent.forEach(container => container.addEventListener('click', e => e.stopPropagation()));
+popup.forEach(overlay => overlay.addEventListener('click', e => closePopup(e.target.closest('.popup'))));
+
+buttonClose.forEach(btn => btn.addEventListener('click', e => closePopup(e.target.closest('.popup'))));
+
+
+formEdit.addEventListener('submit', function () {
   changeProfileName(userName.value, userOccupation.value);
   closePopup(popupEdit);
 });
 
-formAdd.addEventListener('submit', function (e) {
-  e.preventDefault();
-  cardsBlock.prepend(renderCard(cardInputName.value, cardInputPhoto.value));
+formAdd.addEventListener('submit', function () {
+  cardsBlock.prepend(renderCard(photoName.value, photoLink.value));
   closePopup(popupAdd);
   formAdd.reset();
 });
+
+// Validation
+
+const showInputError = (formElement, inputElement, errorMessage) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+
+  inputElement.classList.add('form__input_type_error');
+  errorElement.textContent = errorMessage;
+  errorElement.classList.add('form__input-error_active');
+};
+
+const hideInputError = (formElement, inputElement) => {
+  const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
+
+  inputElement.classList.remove('form__input_type_error');
+  errorElement.classList.remove('form__input-error_active');
+  errorElement.textContent = '';
+};
+
+const hasInvalidInput = (inputList) => {
+  return inputList.some((inputElement) => {
+    return !inputElement.validity.valid;
+  });
+};
+
+const toggleButtonState = (inputList, buttonElement) => {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.classList.add('form__submit_disabled');
+  } else {
+    buttonElement.classList.remove('form__submit_disabled');
+  }
+};
+
+const checkInputValidity = (formElement, inputElement) => {
+  if (!inputElement.validity.valid) {
+    showInputError(formElement, inputElement, inputElement.validationMessage);
+  } else {
+    hideInputError(formElement, inputElement);
+  }
+};
+
+const setEventListeners = (formElement) => {
+  const inputList = Array.from(formElement.querySelectorAll('.form__input'));
+  const buttonElement = formElement.querySelector('.form__submit');
+
+  toggleButtonState(inputList, buttonElement);
+
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener('input', () => {
+      checkInputValidity(formElement, inputElement);
+      toggleButtonState(inputList, buttonElement);
+    });
+  });
+};
+
+const enableValidation = () => {
+  const formList = Array.from(document.querySelectorAll('.form'));
+
+  formList.forEach((formElement) => {
+    const inputList = Array.from(formElement.querySelectorAll('.form__input'));
+    const buttonElement = formElement.querySelector('.form__submit');
+
+    formElement.addEventListener('submit', (e) => {
+      e.preventDefault();
+      toggleButtonState(inputList, buttonElement);
+    });
+
+    setEventListeners(formElement);
+  });
+};
+
+enableValidation();

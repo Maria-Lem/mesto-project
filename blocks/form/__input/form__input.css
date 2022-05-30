@@ -1,5 +1,5 @@
 .form__input {
-  margin-bottom: 30px;
+  margin-bottom: 13px;
   padding-bottom: 13px;
   font-size: 14px;
   line-height: 17px;
@@ -10,7 +10,7 @@
 }
 
 .form__input:last-of-type {
-  margin-bottom: 48px;
+  margin-bottom: 31px;
 }
 
 .form__input::placeholder {
