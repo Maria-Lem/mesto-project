@@ -1,8 +1,9 @@
+import './index.css'; // добавьте импорт главного файла стилей 
+import { renderCard } from "../components/card.js";
+import { openPopup, closePopup } from "../components/modal.js";
+
 const popupEdit = document.querySelector('.popup_type_edit');
 const popupAdd = document.querySelector('.popup_type_add');
-const popupCard = document.querySelector('.popup_type_card');
-const popupImage = document.querySelector('.popup__image');
-const popupCaption = document.querySelector('.popup__caption');
 const popup = document.querySelectorAll('.popup');
 const popupContent = document.querySelectorAll('.container');
 
@@ -23,8 +24,6 @@ const profileName = document.querySelector('.profile__name');
 const profileOccupation = document.querySelector('.profile__occupation');
 
 const cardsBlock = document.querySelector('.cards');
-const cardTemplate = document.querySelector('#cardBlockTemplate').content;
-
 
 const initialCards = [{
     name: 'Архыз',
@@ -52,46 +51,10 @@ const initialCards = [{
   }
 ];
 
-// Creating card
-function renderCard(placeValue, photoValue) {
-  const cardElement = cardTemplate.cloneNode(true);
-  const cardTitle = cardElement.querySelector('.card__title');
-  const cardImage = cardElement.querySelector('.card__image');
-
-  cardTitle.textContent = placeValue;
-  cardImage.src = photoValue;
-  cardImage.alt = placeValue;
-
-  cardElement.querySelector('.button_type_like').addEventListener('click', e => e.target.classList.toggle('button_active'));
-
-  cardElement.querySelector('.button_type_delete').addEventListener('click', e => {
-    const cardItem = e.target.closest('.card');
-    cardItem.remove();
-  });
-
-  cardImage.addEventListener('click', () => {
-    popupImage.src = photoValue;
-    popupImage.alt = placeValue;
-    popupCaption.textContent = placeValue;
-    openPopup(popupCard);
-  });
-
-  return cardElement;
-}
-
 //Adding cards to the page from initialCards array
 initialCards.forEach((item) => {
   cardsBlock.append(renderCard(item.name, item.link));
 })
-
-// Open and close modal wondows
-function openPopup(popup) {
-  popup.classList.add('popup_opened');
-}
-
-function closePopup(popup) {
-  popup.classList.remove('popup_opened')
-}
 
 function changeProfileName(nameValue, jobValue) {
   profileName.textContent = nameValue;
