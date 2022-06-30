@@ -6,6 +6,7 @@
   background-color: transparent;
   border: none;
   outline: none;
+  transition: .2s;
   cursor: pointer;
 }
 
