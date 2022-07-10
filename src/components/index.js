@@ -5,12 +5,10 @@ import { enableValidation } from './validate.js';
 
 const popupEdit = document.querySelector('.popup_type_edit');
 const popupAdd = document.querySelector('.popup_type_add');
-const popup = document.querySelectorAll('.popup');
-const popupContent = document.querySelectorAll('.container');
+const popups = document.querySelectorAll('.popup');
 
 const buttonEdit = document.querySelector('.button_type_edit');
 const buttonAdd = document.querySelector('.button_type_add');
-const buttonClose = document.querySelectorAll('.button_type_close');
 
 const formEdit = document.forms.editProfilePopup;
 const formAdd = document.forms.addCardPopup;
@@ -73,11 +71,18 @@ buttonAdd.addEventListener('click', () => {
   closeOnEsc(popupAdd);
 });
 
-// CLose popups by clicking on overlay
-popupContent.forEach(container => container.addEventListener('click', e => e.stopPropagation()));
-popup.forEach(overlay => overlay.addEventListener('click', e => closePopup(e.target.closest('.popup'))));
+// CLose popups by clicking on overlay & close button
+popups.forEach(popup => {
+  popup.addEventListener('mousedown', e => {
+    if (e.target.classList.contains('popup_opened')) {
+      closePopup(popup);
+    }
 
-buttonClose.forEach(btn => btn.addEventListener('click', e => closePopup(e.target.closest('.popup'))));
+    if (e.target.classList.contains('button_type_close')) {
+      closePopup(popup);
+    }
+  })
+});
 
 formEdit.addEventListener('submit', function () {
   changeProfileName(userName.value, userOccupation.value);
