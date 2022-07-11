@@ -1,4 +1,4 @@
-import { openPopup } from "./modal.js";
+import { openPopup, closeOnEsc } from "./modal.js";
 
 const cardTemplate = document.querySelector('#cardBlockTemplate').content;
 const popupCard = document.querySelector('.popup_type_card');
@@ -27,6 +27,7 @@ function renderCard(placeValue, photoValue) {
     popupImage.alt = placeValue;
     popupCaption.textContent = placeValue;
     openPopup(popupCard);
+    closeOnEsc(popupCard);
   });
 
   return cardElement;
