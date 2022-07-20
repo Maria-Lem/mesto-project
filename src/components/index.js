@@ -55,13 +55,6 @@ Promise.all([getUser(), getCards()])
     profileAvatar.src = userData.avatar;
     cardData.forEach(item => {
       cardsBlock.append(renderCard(item.name, item.link, item.likes.length, userData._id, item.owner._id, item._id));
-      item.likes.forEach(like => {
-        const likeButton = document.querySelector('.button__heart-img');
-        if (like._id === userData._id) {
-          likeButton.classList.add('button_active');
-        }
-        console.log(likeButton)
-      })
     });
   })
 
