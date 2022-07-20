@@ -51,7 +51,7 @@ const cardsBlock = document.querySelector('.cards');
 getCards()
   .then(data => {
     data.forEach(item => {
-      cardsBlock.append(renderCard(item.name, item.link, item.likes.length, item.owner._id));
+      cardsBlock.append(renderCard(item.name, item.link, item.likes.length, item.owner._id, item._id));
     });
   })
 
@@ -115,8 +115,7 @@ formAdd.addEventListener('submit', function () {
   renderLoading(true, buttonSubmitAdd);
   addNewCard(photoName.value, photoLink.value)
     .then(data => {
-      console.log(data)
-      cardsBlock.prepend(renderCard(data.name, data.link, data.likes.length, data.owner._id))
+      cardsBlock.prepend(renderCard(data.name, data.link, data.likes.length, data.owner._id, data._id))
     })
     .finally(() => {
       renderLoading(false, buttonSubmitAdd, 'Создать');
