@@ -16,4 +16,14 @@ const closeOnEsc = (e) => {
   }
 };
 
-export { openPopup, closePopup, closeOnEsc };
+const renderLoading = (isLoading, submitButton, text) => {
+  if (isLoading) {
+    submitButton.textContent = 'Сохранение...';
+  } else {
+    submitButton.classList.add('form__submit_disabled');
+    submitButton.setAttribute('disabled', true);
+    submitButton.textContent = text;
+  }
+}
+
+export { openPopup, closePopup, closeOnEsc, renderLoading };

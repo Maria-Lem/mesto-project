@@ -1,57 +1,66 @@
 import '../pages/index.css'; // добавьте импорт главного файла стилей 
-import { renderCard } from "./card.js";
-import { openPopup, closePopup, closeOnEsc } from "./modal.js";
-import { enableValidation } from './validate.js';
+import {
+  renderCard
+} from "./card.js";
+import {
+  getUser,
+  getCards,
+  changeUserName,
+  addNewCard,
+  changeAvatar,
+} from './api.js';
+import {
+  openPopup,
+  closePopup,
+  closeOnEsc
+} from "./modal.js";
+import {
+  enableValidation
+} from './validate.js';
+import {
+  renderLoading
+} from './modal.js';
 
 const popupEdit = document.querySelector('.popup_type_edit');
 const popupAdd = document.querySelector('.popup_type_add');
+const popupChangeAvatar = document.querySelector('.popup_type_avatar');
 const popups = document.querySelectorAll('.popup');
 
 const buttonEdit = document.querySelector('.button_type_edit');
+const buttonSubmitEdit = document.querySelector('.form__submit-edit');
 const buttonAdd = document.querySelector('.button_type_add');
+const buttonSubmitAdd = document.querySelector('.form__submit-add');
+const avatar = document.querySelector('.profile__pic-container');
+const buttonSubmitAvatar = document.querySelector('.form__submit-avatar');
 
 const formEdit = document.forms.editProfilePopup;
 const formAdd = document.forms.addCardPopup;
+const formAvatar = document.forms.changeAvatarPopup;
 const userName = formEdit.elements.userName;
 const userOccupation = formEdit.elements.userOccupation;
 const photoName = formAdd.elements.photoName;
 const photoLink = formAdd.elements.photoLink;
+const avatarLink = formAvatar.elements.avatarLink;
 
 const profileName = document.querySelector('.profile__name');
 const profileOccupation = document.querySelector('.profile__occupation');
+const profileAvatar = document.querySelector('.profile__pic');
 
 const cardsBlock = document.querySelector('.cards');
 
-const initialCards = [{
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
+getCards()
+  .then(data => {
+    data.forEach(item => {
+      cardsBlock.append(renderCard(item.name, item.link, item.likes.length, item.owner._id));
+    });
+  })
 
-//Adding cards to the page from initialCards array
-initialCards.forEach((item) => {
-  cardsBlock.append(renderCard(item.name, item.link));
-})
+getUser()
+  .then(data => {
+    profileName.textContent = data.name;
+    profileOccupation.textContent = data.about;
+    profileAvatar.src = data.avatar;
+  })
 
 function changeProfileName(nameValue, jobValue) {
   profileName.textContent = nameValue;
@@ -71,6 +80,11 @@ buttonAdd.addEventListener('click', () => {
   closeOnEsc(popupAdd);
 });
 
+avatar.addEventListener('click', () => {
+  openPopup(popupChangeAvatar);
+  closeOnEsc(popupChangeAvatar);
+});
+
 // CLose popups by clicking on overlay & close button
 popups.forEach(popup => {
   popup.addEventListener('mousedown', e => {
@@ -85,15 +99,44 @@ popups.forEach(popup => {
 });
 
 formEdit.addEventListener('submit', function () {
-  changeProfileName(userName.value, userOccupation.value);
+  renderLoading(true, buttonSubmitEdit);
+  changeUserName(userName.value, userOccupation.value)
+    .then(data => {
+      changeProfileName(data.name, data.about);
+    })
+    .finally(() => {
+      renderLoading(false, buttonSubmitEdit, 'Сохранить');
+    })
+
   closePopup(popupEdit);
 });
 
 formAdd.addEventListener('submit', function () {
-  cardsBlock.prepend(renderCard(photoName.value, photoLink.value));
+  renderLoading(true, buttonSubmitAdd);
+  addNewCard(photoName.value, photoLink.value)
+    .then(data => {
+      console.log(data)
+      cardsBlock.prepend(renderCard(data.name, data.link, data.likes.length, data.owner._id))
+    })
+    .finally(() => {
+      renderLoading(false, buttonSubmitAdd, 'Создать');
+    })
   closePopup(popupAdd);
   formAdd.reset();
 });
+
+formAvatar.addEventListener('submit', () => {
+  renderLoading(true, buttonSubmitAvatar);
+  changeAvatar(avatarLink.value)
+    .then(data => {
+      profileAvatar.src = data.avatar;
+    })
+    .finally(() => {
+      renderLoading(false, buttonSubmitAvatar, 'Сохранить');
+    })
+  closePopup(popupChangeAvatar);
+  formAvatar.reset();
+})
 
 enableValidation({
   formSelector: '.popup__form',
@@ -102,4 +145,4 @@ enableValidation({
   inactiveButtonClass: 'form__submit_disabled',
   inputErrorClass: 'form__input_type_error',
   errorClass: 'form__input-error_active'
-}); 
+});

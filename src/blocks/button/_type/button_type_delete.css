@@ -4,5 +4,6 @@
   right: 20px;
   width: 18px;
   height: 19px;
+  visibility: hidden;
   background: url(../../../images/delete-button.svg) no-repeat center / contain;
 }
