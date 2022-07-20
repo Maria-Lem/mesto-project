@@ -48,18 +48,21 @@ const profileAvatar = document.querySelector('.profile__pic');
 
 const cardsBlock = document.querySelector('.cards');
 
-getCards()
-  .then(data => {
-    data.forEach(item => {
-      cardsBlock.append(renderCard(item.name, item.link, item.likes.length, item.owner._id, item._id));
+Promise.all([getUser(), getCards()])
+  .then(([userData, cardData]) => {
+    profileName.textContent = userData.name;
+    profileOccupation.textContent = userData.about;
+    profileAvatar.src = userData.avatar;
+    cardData.forEach(item => {
+      cardsBlock.append(renderCard(item.name, item.link, item.likes.length, userData._id, item.owner._id, item._id));
+      item.likes.forEach(like => {
+        const likeButton = document.querySelector('.button__heart-img');
+        if (like._id === userData._id) {
+          likeButton.classList.add('button_active');
+        }
+        console.log(likeButton)
+      })
     });
-  })
-
-getUser()
-  .then(data => {
-    profileName.textContent = data.name;
-    profileOccupation.textContent = data.about;
-    profileAvatar.src = data.avatar;
   })
 
 function changeProfileName(nameValue, jobValue) {
@@ -72,17 +75,14 @@ buttonEdit.addEventListener('click', () => {
   userName.value = profileName.textContent;
   userOccupation.value = profileOccupation.textContent;
   openPopup(popupEdit);
-  closeOnEsc(popupEdit);
 });
 
 buttonAdd.addEventListener('click', () => {
   openPopup(popupAdd);
-  closeOnEsc(popupAdd);
 });
 
 avatar.addEventListener('click', () => {
   openPopup(popupChangeAvatar);
-  closeOnEsc(popupChangeAvatar);
 });
 
 // CLose popups by clicking on overlay & close button
@@ -103,25 +103,24 @@ formEdit.addEventListener('submit', function () {
   changeUserName(userName.value, userOccupation.value)
     .then(data => {
       changeProfileName(data.name, data.about);
+      closePopup(popupEdit);
     })
     .finally(() => {
       renderLoading(false, buttonSubmitEdit, 'Сохранить');
     })
-
-  closePopup(popupEdit);
 });
 
 formAdd.addEventListener('submit', function () {
   renderLoading(true, buttonSubmitAdd);
-  addNewCard(photoName.value, photoLink.value)
-    .then(data => {
-      cardsBlock.prepend(renderCard(data.name, data.link, data.likes.length, data.owner._id, data._id))
+  Promise.all([getUser(), addNewCard(photoName.value, photoLink.value)])
+    .then(([userData, newCardData]) => {
+      cardsBlock.prepend(renderCard(newCardData.name, newCardData.link, newCardData.likes.length, userData._id, newCardData.owner._id, newCardData._id))
+      closePopup(popupAdd);
+      formAdd.reset();
     })
     .finally(() => {
       renderLoading(false, buttonSubmitAdd, 'Создать');
     })
-  closePopup(popupAdd);
-  formAdd.reset();
 });
 
 formAvatar.addEventListener('submit', () => {
@@ -129,12 +128,12 @@ formAvatar.addEventListener('submit', () => {
   changeAvatar(avatarLink.value)
     .then(data => {
       profileAvatar.src = data.avatar;
+      closePopup(popupChangeAvatar);
+      formAvatar.reset();
     })
     .finally(() => {
       renderLoading(false, buttonSubmitAvatar, 'Сохранить');
     })
-  closePopup(popupChangeAvatar);
-  formAvatar.reset();
 })
 
 enableValidation({

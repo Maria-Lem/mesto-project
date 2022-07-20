@@ -1,5 +1,5 @@
 import { openPopup, closeOnEsc } from "./modal.js";
-import { deleteCard, likeCard } from "./api.js";
+import { deleteCard, likeCard, deleteLike } from "./api.js";
 
 const cardTemplate = document.querySelector('#cardBlockTemplate').content;
 const popupCard = document.querySelector('.popup_type_card');
@@ -7,7 +7,7 @@ const popupImage = document.querySelector('.popup__image');
 const popupCaption = document.querySelector('.popup__caption');
 
 // Creating card
-function renderCard(placeValue, photoValue, numberOfLikes, id, cardId) {
+function renderCard(placeValue, photoValue, numberOfLikes, userDataId, id, cardId) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardTitle = cardElement.querySelector('.card__title');
   const cardImage = cardElement.querySelector('.card__image');
@@ -20,7 +20,7 @@ function renderCard(placeValue, photoValue, numberOfLikes, id, cardId) {
   cardImage.alt = placeValue;
   cardLikes.textContent = numberOfLikes;
 
-  if ('46f2ef1a527b080d0e0a0456' !== id) {
+  if (userDataId !== id) {
     deleteButton.classList.remove('button_visible');
   } else {
     deleteButton.classList.add('button_visible');
@@ -32,26 +32,36 @@ function renderCard(placeValue, photoValue, numberOfLikes, id, cardId) {
     });
   }
   
-
   likeButton.addEventListener('click', e => {
-    if (!likeButton.classList.contains('button_active')) {
-      console.log('hi')
-      likeCard(cardId)
-        .then((res) =>{
+    if (likeButton.classList.contains('button_active')) {
+      deleteLike(cardId)
+        .then(res => {
           cardLikes.textContent = res.likes.length;
-          likeButton.classList.add('button_active');
-          // numberOfLikes++;
-          console.log(res)
+          e.target.classList.remove('button_active');
+        })
+    } else {
+      likeCard(cardId)
+        .then(res =>{
+          cardLikes.textContent = res.likes.length;
+          e.target.classList.add('button_active');
         })
     }
   });
+
+  const renderLike = (isLiked) => {
+    if (isLiked) {
+      likeButton.classList.add('button_active');
+
+    } else {
+      likeButton.classList.remove('button_active');
+    }
+  }
     
   cardImage.addEventListener('click', () => {
     popupImage.src = photoValue;
     popupImage.alt = placeValue;
     popupCaption.textContent = placeValue;
     openPopup(popupCard);
-    closeOnEsc(popupCard);
   });
 
   return cardElement;

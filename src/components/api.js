@@ -78,6 +78,14 @@ const likeCard = (cardId) => {
     .then(getResponse)
 }
 
+const deleteLike = (cardId) => {
+  return fetch(`${mestoApiConfig.baseUrl}/cards/likes/${cardId}`, {
+    method: 'DELETE',
+    headers: mestoApiConfig.headers
+  })
+    .then(getResponse)
+}
+
 export {
   getUser,
   getCards,
@@ -85,5 +93,6 @@ export {
   addNewCard,
   changeAvatar,
   deleteCard,
-  likeCard
+  likeCard,
+  deleteLike
 };
