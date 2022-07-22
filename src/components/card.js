@@ -1,5 +1,11 @@
-import { openPopup, closeOnEsc } from "./modal.js";
-import { deleteCard, likeCard, deleteLike } from "./api.js";
+import {
+  openPopup
+} from "./modal.js";
+import {
+  handleDeleteCard,
+  handleLikeCard,
+  handleDislikeCard
+} from "./index.js";
 
 const cardTemplate = document.querySelector('#cardBlockTemplate').content;
 const popupCard = document.querySelector('.popup_type_card');
@@ -7,7 +13,7 @@ const popupImage = document.querySelector('.popup__image');
 const popupCaption = document.querySelector('.popup__caption');
 
 // Creating card
-function renderCard(placeValue, photoValue, numberOfLikes, userDataId, id, cardId) {
+function renderCard(placeValue, photoValue, numberOfLikes, likes, userDataId, id, cardId) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardTitle = cardElement.querySelector('.card__title');
   const cardImage = cardElement.querySelector('.card__image');
@@ -20,43 +26,25 @@ function renderCard(placeValue, photoValue, numberOfLikes, userDataId, id, cardI
   cardImage.alt = placeValue;
   cardLikes.textContent = numberOfLikes;
 
+  if (likes.find(like => like._id === userDataId)) {
+    likeButton.classList.add('button_active');
+  }
+
   if (userDataId !== id) {
     deleteButton.classList.remove('button_visible');
   } else {
     deleteButton.classList.add('button_visible');
-    deleteButton.addEventListener('click', e => {
-      deleteCard(cardId)
-      .then(() => {
-          e.target.closest('.card').remove();
-          })
-    });
+    deleteButton.addEventListener('click', e => handleDeleteCard(cardId, e.target));
   }
-  
+
   likeButton.addEventListener('click', e => {
     if (likeButton.classList.contains('button_active')) {
-      deleteLike(cardId)
-        .then(res => {
-          cardLikes.textContent = res.likes.length;
-          e.target.classList.remove('button_active');
-        })
+      handleDislikeCard(cardId, cardLikes, e.target);
     } else {
-      likeCard(cardId)
-        .then(res =>{
-          cardLikes.textContent = res.likes.length;
-          e.target.classList.add('button_active');
-        })
+      handleLikeCard(cardId, cardLikes, e.target);
     }
   });
 
-  const renderLike = (isLiked) => {
-    if (isLiked) {
-      likeButton.classList.add('button_active');
-
-    } else {
-      likeButton.classList.remove('button_active');
-    }
-  }
-    
   cardImage.addEventListener('click', () => {
     popupImage.src = photoValue;
     popupImage.alt = placeValue;
@@ -67,4 +55,6 @@ function renderCard(placeValue, photoValue, numberOfLikes, userDataId, id, cardI
   return cardElement;
 }
 
-export { renderCard };
+export {
+  renderCard
+};

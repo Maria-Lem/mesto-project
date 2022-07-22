@@ -8,11 +8,13 @@ import {
   changeUserName,
   addNewCard,
   changeAvatar,
+  deleteCard,
+  likeCard,
+  deleteLike
 } from './api.js';
 import {
   openPopup,
   closePopup,
-  closeOnEsc
 } from "./modal.js";
 import {
   enableValidation
@@ -54,9 +56,39 @@ Promise.all([getUser(), getCards()])
     profileOccupation.textContent = userData.about;
     profileAvatar.src = userData.avatar;
     cardData.forEach(item => {
-      cardsBlock.append(renderCard(item.name, item.link, item.likes.length, userData._id, item.owner._id, item._id));
+          cardsBlock.append(renderCard(item.name,
+            item.link,
+            item.likes.length,
+            item.likes,
+            userData._id,
+            item.owner._id,
+            item._id,
+            ));
     });
   })
+
+export const handleDeleteCard = (cardId, deleteButton) => {
+  deleteCard(cardId)
+    .then(() => {
+      deleteButton.closest('.card').remove();
+    })
+}
+
+export const handleLikeCard = (cardId, cardLikes, likeButton) => {
+  likeCard(cardId)
+    .then(res => {
+      cardLikes.textContent = res.likes.length;
+      likeButton.classList.add('button_active');
+    })
+}
+
+export const handleDislikeCard = (cardId, cardLikes, likeButton) => {
+  deleteLike(cardId)
+    .then(res => {
+      cardLikes.textContent = res.likes.length;
+      likeButton.classList.remove('button_active');
+    })
+}
 
 function changeProfileName(nameValue, jobValue) {
   profileName.textContent = nameValue;
@@ -64,7 +96,7 @@ function changeProfileName(nameValue, jobValue) {
 }
 
 buttonEdit.addEventListener('click', () => {
-  // При открытии модального окна, шначения инпутов автоматически заполняются значениями в профиле
+  // При открытии модального окна, значения инпутов автоматически заполняются значениями в профиле
   userName.value = profileName.textContent;
   userOccupation.value = profileOccupation.textContent;
   openPopup(popupEdit);
