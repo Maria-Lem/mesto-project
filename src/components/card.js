@@ -1,11 +1,6 @@
 import {
   openPopup
 } from "./modal.js";
-import {
-  handleDeleteCard,
-  handleLikeCard,
-  handleDislikeCard
-} from "./index.js";
 
 const cardTemplate = document.querySelector('#cardBlockTemplate').content;
 const popupCard = document.querySelector('.popup_type_card');
@@ -13,7 +8,7 @@ const popupImage = document.querySelector('.popup__image');
 const popupCaption = document.querySelector('.popup__caption');
 
 // Creating card
-function renderCard(placeValue, photoValue, numberOfLikes, likes, userDataId, id, cardId) {
+function renderCard(placeValue, photoValue, numberOfLikes, likes, userDataId, id, cardId, handleDeleteCard, handleLikeCard, handleDislikeCard) {
   const cardElement = cardTemplate.cloneNode(true);
   const cardTitle = cardElement.querySelector('.card__title');
   const cardImage = cardElement.querySelector('.card__image');
@@ -26,10 +21,10 @@ function renderCard(placeValue, photoValue, numberOfLikes, likes, userDataId, id
   cardImage.alt = placeValue;
   cardLikes.textContent = numberOfLikes;
 
-  if (likes.find(like => like._id === userDataId)) {
+  if (likes.some(like => like._id === userDataId)) {
     likeButton.classList.add('button_active');
   }
-
+  
   if (userDataId !== id) {
     deleteButton.classList.remove('button_visible');
   } else {

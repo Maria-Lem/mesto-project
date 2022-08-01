@@ -50,31 +50,14 @@ const profileAvatar = document.querySelector('.profile__pic');
 
 const cardsBlock = document.querySelector('.cards');
 
-Promise.all([getUser(), getCards()])
-  .then(([userData, cardData]) => {
-    profileName.textContent = userData.name;
-    profileOccupation.textContent = userData.about;
-    profileAvatar.src = userData.avatar;
-    cardData.forEach(item => {
-          cardsBlock.append(renderCard(item.name,
-            item.link,
-            item.likes.length,
-            item.likes,
-            userData._id,
-            item.owner._id,
-            item._id,
-            ));
-    });
-  })
-
-export const handleDeleteCard = (cardId, deleteButton) => {
+const handleDeleteCard = (cardId, deleteButton) => {
   deleteCard(cardId)
     .then(() => {
       deleteButton.closest('.card').remove();
     })
 }
 
-export const handleLikeCard = (cardId, cardLikes, likeButton) => {
+const handleLikeCard = (cardId, cardLikes, likeButton) => {
   likeCard(cardId)
     .then(res => {
       cardLikes.textContent = res.likes.length;
@@ -82,13 +65,33 @@ export const handleLikeCard = (cardId, cardLikes, likeButton) => {
     })
 }
 
-export const handleDislikeCard = (cardId, cardLikes, likeButton) => {
+const handleDislikeCard = (cardId, cardLikes, likeButton) => {
   deleteLike(cardId)
     .then(res => {
       cardLikes.textContent = res.likes.length;
       likeButton.classList.remove('button_active');
     })
 }
+
+Promise.all([getUser(), getCards()])
+  .then(([userData, cardData]) => {
+    profileName.textContent = userData.name;
+    profileOccupation.textContent = userData.about;
+    profileAvatar.src = userData.avatar;
+    cardData.forEach(item => {
+      cardsBlock.append(renderCard(item.name,
+        item.link,
+        item.likes.length,
+        item.likes,
+        userData._id,
+        item.owner._id,
+        item._id,
+        handleDeleteCard,
+        handleLikeCard,
+        handleDislikeCard
+      ));
+    });
+  })
 
 function changeProfileName(nameValue, jobValue) {
   profileName.textContent = nameValue;
@@ -139,7 +142,7 @@ formAdd.addEventListener('submit', function () {
   renderLoading(true, buttonSubmitAdd);
   Promise.all([getUser(), addNewCard(photoName.value, photoLink.value)])
     .then(([userData, newCardData]) => {
-      cardsBlock.prepend(renderCard(newCardData.name, newCardData.link, newCardData.likes.length, userData._id, newCardData.owner._id, newCardData._id))
+      cardsBlock.prepend(renderCard(newCardData.name, newCardData.link, newCardData.likes.length, newCardData.likes, userData._id, newCardData.owner._id, newCardData._id))
       closePopup(popupAdd);
       formAdd.reset();
     })
