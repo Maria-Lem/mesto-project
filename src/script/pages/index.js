@@ -1,7 +1,7 @@
-import '../pages/index.css'; // добавьте импорт главного файла стилей 
+import '../../pages/index.css'; // добавьте импорт главного файла стилей 
 import {
   renderCard
-} from "../components/card.js";
+} from "../card.js";
 import {
   getUser,
   getCards,
@@ -11,17 +11,17 @@ import {
   deleteCard,
   likeCard,
   deleteLike
-} from '../components/api.js';
+} from '../api.js';
 import {
   openPopup,
   closePopup,
-} from "../components/modal.js";
+} from "../modal.js";
 import {
   enableValidation
-} from '../components/validate.js';
+} from '../validate.js';
 import {
   renderLoading
-} from '../components/modal.js';
+} from '../modal.js';
 
 const popupEdit = document.querySelector('.popup_type_edit');
 const popupAdd = document.querySelector('.popup_type_add');
